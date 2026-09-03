@@ -7,4 +7,24 @@ const tilt=document.querySelector('.tilt');if(tilt&&!reduced.matches){tilt.addEv
 if(glow&&matchMedia('(pointer:fine)').matches&&!reduced.matches)window.addEventListener('pointermove',e=>{glow.style.opacity='1';glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
 document.querySelectorAll('.magnetic').forEach(el=>{el.addEventListener('pointermove',e=>{if(!matchMedia('(pointer:fine)').matches||reduced.matches)return;const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.08}px,${(e.clientY-r.top-r.height/2)*.11}px)`});el.addEventListener('pointerleave',()=>el.style.transform='')});
 menuBtn?.addEventListener('click',()=>{mobileMenu?.classList.toggle('open');menuBtn.classList.toggle('active');document.body.style.overflow=mobileMenu?.classList.contains('open')?'hidden':''});mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobileMenu.classList.remove('open');document.body.style.overflow=''}));
-const form=document.querySelector('#enquiryForm'),note=document.querySelector('#formNote');form?.addEventListener('submit',e=>{e.preventDefault();if(note){note.textContent='Direct private-enquiry routing is being activated. Brand contact details will appear here shortly.';note.style.color='#d3a64f'}});
+
+// ARAVALI RESERVE private enquiry routing
+const CONTACT_EMAIL='indiatryme@gmail.com';
+const WHATSAPP_NUMBER='919235115621';
+const form=document.querySelector('#enquiryForm'),note=document.querySelector('#formNote');
+if(form&&note){
+  note.innerHTML=`Private enquiries: <a href="mailto:${CONTACT_EMAIL}" style="color:inherit;text-decoration:underline;text-underline-offset:4px">${CONTACT_EMAIL}</a> · <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello Aravali Reserve, I would like to discuss a private enquiry.')}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:4px">WhatsApp +91 92351 15621</a>`;
+  note.style.color='#d3a64f';
+  const wa=document.createElement('a');
+  wa.href=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello Aravali Reserve, I would like to discuss hospitality, gifting or an event requirement.')}`;
+  wa.target='_blank';wa.rel='noopener';wa.className='text-link';wa.textContent='Prefer WhatsApp? Start a private conversation ↗';wa.style.display='inline-block';wa.style.marginTop='14px';
+  note.insertAdjacentElement('afterend',wa);
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const data=new FormData(form),name=(data.get('name')||'').toString().trim(),email=(data.get('email')||'').toString().trim(),organisation=(data.get('organisation')||'').toString().trim(),message=(data.get('message')||'').toString().trim();
+    const subject=`Aravali Reserve Private Enquiry — ${organisation||name||'Website'}`;
+    const body=[`Name: ${name}`,`Email: ${email}`,`Organisation / Event: ${organisation||'—'}`,'',`Requirement:`,message||'—','','Sent from the Aravali Reserve website.'].join('\n');
+    note.textContent='Opening your email app with the enquiry prepared for Aravali Reserve…';
+    window.location.href=`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+}
