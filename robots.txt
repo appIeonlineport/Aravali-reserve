@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://appieonlineport.github.io/Aravali-reserve/sitemap.xml
