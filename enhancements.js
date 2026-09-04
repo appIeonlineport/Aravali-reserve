@@ -1,3 +1,5 @@
+const revealCss=document.createElement('link');revealCss.rel='stylesheet';revealCss.href='reveal-v2.css';document.head.appendChild(revealCss);
+
 const dropStage=document.querySelector('#dropStage');
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
